@@ -1,14 +1,11 @@
-const fs = require('fs');
+const fs = require('fs')
 
-const cat = function(filePath) {
-  fs.readFile(filePath, (err, data) => {
-    if (err) throw err;
-    console.log(data.toString().trim());
+module.exports = (fileName, done) => {
+  fs.readFile(fileName, 'utf8', (err, data) => {
+    if (err) {
+      done(err.stack)
+    } else {
+      done(data)
+    }
   })
 }
-
-
-module.exports = cat;
-
-//ls
-//

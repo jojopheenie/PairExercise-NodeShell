@@ -1,41 +1,28 @@
-const pwd = require("./pwd.js");
-const ls = require("./ls.js");
-const cat = require("./cat.js");
+const prompt = (data) => {
+    console.log(data)
+    process.stdout.write('> ')
+  }
 
-process.stdout.write('prompt > ');
-
-process.stdin.on('data', (data) => {
-
-    const cmd = data.toString().trim();
-    if([...cmd].length === 1) {
-        runner(command);
+  const main = (data) => {
+    const entry = data.toString().trim()
+    const [command, arg] = entry.split(' ')
+    switch (command) {
+      case 'pwd':
+        require('./pwd')(prompt)
+        break
+      case 'ls':
+        require('./ls')(prompt)
+        break
+      case 'cat':
+        require('./cat')(arg, prompt)
+        break
+      case 'curl':
+        require('./curl')(arg, prompt)
+        break
+      default:
+        prompt('not found')
     }
+  }
 
-    else {
-        const args = cmd.split(' ');
-        const command = args[0];
-        const fileName = args[1];
-        cat(`${pwd()}/${fileName}`);
-        process.stdout.write('\nprompt > ');
-    }
-
-
-    });
-
-function runner (command, fileName) {
-    if (cmd === 'pwd') {
-        pwd();
-    }
-    else if (cmd === 'ls') {
-        ls();
-    }
-    else {
-        process.stdout.write('You typed: ' + cmd);
-
-    }
-    process.stdout.write('\nprompt > ');
-
-}
-
-
-
+  prompt('Welcome to Node Shell!')
+  process.stdin.on('data', main)
